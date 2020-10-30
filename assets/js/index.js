@@ -12,12 +12,12 @@ const nodeListTd = document.querySelectorAll("td");
 const initTab = () => {
   for (let i = 0; i < 9; i++) {
     nodeListTd[i].innerHTML = "";
-    console.log(nodeListTd[i].innerHTML);
   }
 };
 
 // inscrire symbole quand clique sur une case
-const inscritSymbole = (e) => {
+const inscritSymbole = (event) => {
+  const e = event.target;
   if (tour) {
     if (celluleVide(e)) {
       e.innerHTML = joueurUn;
@@ -122,7 +122,7 @@ const partieGagner = (joueur) => {
 
 // alerte match nul
 const partieNul = () => {
-  alert(`Match nul pas de gagnant 😔 OU partie terminer`);
+  alert(`Match nul pas de gagnant 😔`);
 };
 
 // alerte cellule déjà occuper
@@ -142,22 +142,20 @@ const celluleVide = (e) => {
 };
 
 // ajoute un event listener sur chaque cellule de la table
-const eventListenerTd = nodeListTd.forEach((e) =>
-  e.addEventListener("click", function () {
-    inscritSymbole(e);
-  })
-);
+const eventListenerTd = () => {
+  nodeListTd.forEach((e) =>
+  e.addEventListener("click", inscritSymbole))
+};
 
-// supprimer eventlistener
-const deleteEventListener = nodeListTd.forEach((e) =>
-  e.removeEventListener("click", function () {
-    inscritSymbole(e);
-  })
-);
+// supprimer eventlistener sur chaque cellule de la table
+const deleteEventListenerTd = () => {
+  nodeListTd.forEach((e) =>
+  e.removeEventListener("click", inscritSymbole))
+};
 
 // afficher bouton rejouer
 const afficherBoutonRejouer = () => {
-  deleteEventListener;
+  deleteEventListenerTd();
   rejouerBtn.disabled = partie;
 };
 
@@ -166,12 +164,12 @@ rejouerBtn.addEventListener("click", function () {
   rejouerBtn.disabled = !partie;
   tour = true;
   initTab();
-  eventListenerTd;
+  eventListenerTd();
 });
 
 // lancement partie de tic tac toe au chargement du DOM
 // appel de la fonction d'initalisation du tableau à vide
 document.addEventListener("DOMContentLoaded", function () {
   initTab();
-  eventListenerTd;
+  eventListenerTd();
 });
